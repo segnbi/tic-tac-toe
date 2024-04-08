@@ -3,6 +3,7 @@ Tic Tac Toe Player
 """
 
 import math
+import copy
 
 X = "X"
 O = "O"
@@ -13,9 +14,9 @@ def initial_state():
     """
     Returns starting state of the board.
     """
-    return [[X, EMPTY, X],
-            [X, O, O],
-            [EMPTY, O, EMPTY]]
+    return [[EMPTY, EMPTY, EMPTY],
+            [EMPTY, EMPTY, EMPTY],
+            [EMPTY, EMPTY, EMPTY]]
 
 
 def player(board):
@@ -179,16 +180,14 @@ def minimax(board):
     Returns the optimal action for the current player on the board.
     """
     if player(board) == X:
-        print (max_val(board).a)
-        raise NotImplementedError
-        return max_val(board)
+        # print (max_val(board).a)
+        # raise NotImplementedError
+        return max_val(board).a
         
     if player(board) == O:
-        print (min_val(board).a)
-        raise NotImplementedError
-        return min_val(board)  
-
-    raise NotImplementedError
+        # print (min_val(board).a)
+        # raise NotImplementedError
+        return min_val(board).a
 
 
 def max_val(board):
@@ -198,8 +197,17 @@ def max_val(board):
         return Temp(utility(board), set())
     
     for action in actions(board):
-        t = max(t, min_val(result(board, action)), action)
-        return t
+        t = max(t, min_val(result(copy.deepcopy(board), action)), action)
+        
+    return t
+
+
+def max(t, min_t, action):
+    if t.v < min_t.v:
+        min_t.a = action
+        return min_t
+    
+    return t
 
 
 def min_val(board):
@@ -209,9 +217,10 @@ def min_val(board):
         return Temp(utility(board), set())
     
     for action in actions(board):
-        t = min(t, max_val(result(board, action)), action)
-        return t
-    
+        t = min(t, max_val(result(copy.deepcopy(board), action)), action)
+        
+    return t
+
 
 def min(t, max_t, action):
     if t.v > max_t.v:
@@ -219,14 +228,6 @@ def min(t, max_t, action):
         return max_t
     
     return t
-
-
-def max(t, min_t, action):
-    if t.v > min_t.v:
-        t.a = action
-        return t
-    
-    return min_t
 
 
 class Temp():
