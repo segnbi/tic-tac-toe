@@ -180,13 +180,9 @@ def minimax(board):
     Returns the optimal action for the current player on the board.
     """
     if player(board) == X:
-        # print (max_val(board).a)
-        # raise NotImplementedError
         return max_val(board).a
         
     if player(board) == O:
-        # print (min_val(board).a)
-        # raise NotImplementedError
         return min_val(board).a
 
 
